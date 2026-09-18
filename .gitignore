@@ -1,0 +1,26 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.egg-info/
+
+# Large generated artifacts (root-level only — src/data/ and src/models/ source stays tracked)
+/data/
+/models/
+/checkpoints/
+/cache/
+/outputs/
+/runs/
+/logs/
+
+# Design docs are working scratch, not committed going forward
+/ai_docs/
+
+# Experiment tracking
+/wandb/
+
+# Model weights / checkpoints anywhere
+*.pt
+*.pth
+*.ckpt

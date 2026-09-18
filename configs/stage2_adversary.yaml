@@ -1,0 +1,46 @@
+# Stage 2: stage 1 + GRL adversary on the pooled z_t. h source is still
+# h_T_norm direct into FiLM — no h-encoder yet. implementation.md §6.4.
+
+data_root: /data/tactile-datagen/openarm_xhand1_wuji_ludi
+cache_dir: /data/tactile-train-cache/patches
+ckpt_dir: /data/tactile-train-ckpt/stage2_adversary
+device: null
+
+embodiments:
+  openarm_xhand1: 22
+  wuji: 20
+  ludi_dex3: 19
+
+K: 128
+W: 8
+H: 100
+num_links: 32
+d_tok: 256
+d_model: 512
+d_h: 16            # still h_T_dim: no h-encoder in this stage either.
+h_T_dim: 16
+num_views: 2
+num_vision_queries: 16
+view_dropout_p: 0.1
+
+use_h_encoder: false
+use_adversary: true
+grl_ramp: 10000
+lam_max: 0.3
+
+batch_size: 96
+num_groups: 8
+num_workers: 8
+
+lr_encoder: 1.0e-4
+lr_decoder: 1.0e-4
+lr_adversary: 3.0e-4
+wd_encoder: 1.0e-4
+wd_decoder: 1.0e-4
+
+warmup_steps: 2000
+total_steps: 200000
+
+log:
+  use_wandb: true
+  project: tactile-train

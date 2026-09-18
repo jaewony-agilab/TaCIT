@@ -1,0 +1,47 @@
+# Stage 1: tokenizer + state encoder + decoder, conditioned directly on the
+# descriptor. No h-encoder, no adversary. Must train and fit before anything
+# else is enabled — implementation.md §6.4, architecture.md §9.
+
+data_root: /data/tactile-datagen/openarm_xhand1_wuji_ludi
+cache_dir: /data/tactile-train-cache/patches
+ckpt_dir: /data/tactile-train-ckpt/stage1_baseline
+device: null  # null -> auto (cuda if available else cpu)
+
+# ponytail: DOF counts are placeholders pending the actual robot URDFs — fill in
+# from tactile-datagen's embodiment configs before real runs.
+embodiments:
+  openarm_xhand1: 22
+  wuji: 20
+  ludi_dex3: 19
+
+K: 128
+W: 8
+H: 100
+num_links: 32
+d_tok: 256
+d_model: 512
+d_h: 16            # = h_T_dim: stage 1 feeds h_T_norm straight into FiLM, no h-encoder.
+h_T_dim: 16
+num_views: 2
+num_vision_queries: 16
+view_dropout_p: 0.1
+
+use_h_encoder: false
+use_adversary: false
+
+batch_size: 96     # 256 on an A6000 node — see implementation.md §6.1
+num_groups: 8
+num_workers: 8
+
+lr_encoder: 1.0e-4
+lr_decoder: 1.0e-4
+lr_adversary: 3.0e-4
+wd_encoder: 1.0e-4
+wd_decoder: 1.0e-4
+
+warmup_steps: 2000
+total_steps: 200000
+
+log:
+  use_wandb: true
+  project: tactile-train
